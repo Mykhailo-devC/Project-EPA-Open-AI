@@ -2,7 +2,7 @@ namespace Project_EPA
 {
     public class WeatherForecast
     {
-        public DateOnly Date { get; set; }
+        public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
         public int TemperatureC { get; set; }
 
