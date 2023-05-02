@@ -1,0 +1,17 @@
+version: '3.4'
+
+networks:
+  backend:
+
+services:
+  epa-webapi:
+    container_name: epa-web-api
+    image: ${DOCKER_REGISTRY-}epawebapi
+    build:
+      context: .
+      dockerfile: EPA-WebAPI\Dockerfile
+    networks:
+      - backend
+    ports:
+      - 8002:80 
+    

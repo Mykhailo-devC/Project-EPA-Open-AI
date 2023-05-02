@@ -1,7 +1,6 @@
-Project-EPA/.vs/
-Project-EPA/obj/
-Project-EPA/Properties/launchSettings.json
+Project-EPA-OpenAI/obj/
+Project-EPA-OpenAI/EPA-WebAPI/obj/
+Project-EPA-OpenAI/EPA-WebAPI/bin/
+Project-EPA-OpenAI/.vs/
+Project-EPA-OpenAI/bin/
 *.csproj
-*.user
-Project-EPA/.dockerignore
-Project-EPA/appsettings.Development.json

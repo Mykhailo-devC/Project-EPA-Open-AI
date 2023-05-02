@@ -1,8 +1,8 @@
-namespace Project_EPA
+namespace EPA_WebAPI
 {
     public class WeatherForecast
     {
-        public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public DateOnly Date { get; set; }
 
         public int TemperatureC { get; set; }
 
