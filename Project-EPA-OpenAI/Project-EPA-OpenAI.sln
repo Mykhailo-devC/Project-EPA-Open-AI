@@ -7,9 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenWebApi", "OpenWebApi", "{A86F8684-B2CB-4090-9AA5-6E46AAB29A2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPA-WebAPI", "EPA-WebAPI\EPA-WebAPI.csproj", "{55A8709F-F778-4B7B-A757-33A4A549A0C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPA-WebAPI", "EPA-WebAPI\EPA-WebAPI.csproj", "{55A8709F-F778-4B7B-A757-33A4A549A0C9}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{08A37222-BC7C-4D2E-A508-375282553C34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPA.Engine.Repository", "..\EPA.Engine.Repository\EPA.Engine.Repository.csproj", "{7F505785-4545-4CC0-A00C-BB63537E5CB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epa.Engine.Models", "..\Epa.Engine.Models\Epa.Engine.Models.csproj", "{241D639E-A765-46FA-A8E7-3576F99B4731}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,12 +29,22 @@ Global
 		{08A37222-BC7C-4D2E-A508-375282553C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08A37222-BC7C-4D2E-A508-375282553C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08A37222-BC7C-4D2E-A508-375282553C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F505785-4545-4CC0-A00C-BB63537E5CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F505785-4545-4CC0-A00C-BB63537E5CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F505785-4545-4CC0-A00C-BB63537E5CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F505785-4545-4CC0-A00C-BB63537E5CB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241D639E-A765-46FA-A8E7-3576F99B4731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241D639E-A765-46FA-A8E7-3576F99B4731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241D639E-A765-46FA-A8E7-3576F99B4731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241D639E-A765-46FA-A8E7-3576F99B4731}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{55A8709F-F778-4B7B-A757-33A4A549A0C9} = {A86F8684-B2CB-4090-9AA5-6E46AAB29A2A}
+		{7F505785-4545-4CC0-A00C-BB63537E5CB3} = {BD61505E-E66F-4F19-90D0-679BCFA9A75B}
+		{241D639E-A765-46FA-A8E7-3576F99B4731} = {BD61505E-E66F-4F19-90D0-679BCFA9A75B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE39D7F9-23B4-442F-9727-B34058901D3E}

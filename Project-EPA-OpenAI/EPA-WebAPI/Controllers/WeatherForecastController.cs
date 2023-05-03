@@ -1,4 +1,6 @@
+using Epa.Engine.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EPA_WebAPI.Controllers
 {
@@ -12,22 +14,45 @@ namespace EPA_WebAPI.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly EpaDbContext _dbContext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(EpaDbContext epaDb, ILogger<WeatherForecastController> logger)
         {
+            _dbContext = epaDb;
             _logger = logger;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<TestModel>> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+
+            return await _dbContext.testModels.ToListAsync();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post()
+        {
+            var obj = new TestModel()
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                Name = "Test",
+            };
+
+            await _dbContext.AddAsync(obj);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(obj);
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute]int id)
+        {
+            var obj = await _dbContext.testModels.FindAsync(id);
+
+            _dbContext.testModels.Remove(obj);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(obj);
         }
     }
 }
