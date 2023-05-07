@@ -17,7 +17,7 @@ services:
       - 8001:1433 
   epa-webapi:
     container_name: epa-web-api
-    image: ${DOCKER_REGISTRY-}epawebapi
+    image: mykhailodock/epawebapi:alfa_1.0
     build:
       context: .
       dockerfile: EPA-WebAPI\Dockerfile
