@@ -1,4 +1,4 @@
-namespace Project_EPA
+namespace EPA_WebAPI
 {
     public class WeatherForecast
     {
