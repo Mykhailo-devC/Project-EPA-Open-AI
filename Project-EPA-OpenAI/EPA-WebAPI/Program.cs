@@ -1,23 +1,31 @@
-using Epa.Engine.Models;
+using Epa.Engine.DB;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
+
 
 var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
 var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-var dbPassword = Environment.GetEnvironmentVariable("SA_PASSWORD");
+var dbPassword = Environment.GetEnvironmentVariable("MSSQL_SA_PASSWORD");
 
 //my localhost sa password: P@ssw0rd121#
 //container password: password@12345# 
 
-var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword};TrustServerCertificate=True";
+var connectionString = string.Format(builder.Configuration.GetConnectionString("DefaultConnection"), dbHost, dbName, dbPassword);
 
 builder.Services.AddDbContext<EpaDbContext>(opt => opt.UseSqlServer(connectionString,
-                                                                    b => b.MigrationsAssembly("Epa.Engine.Models")));
+                                                                    b => b.MigrationsAssembly(
+                                                                        typeof(Program).Assembly.GetName().Name
+                                                                        )));
 
 var app = builder.Build();
 

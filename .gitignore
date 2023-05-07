@@ -7,3 +7,13 @@ Project-EPA-OpenAI/bin/
 Epa.Engine.Models/bin/
 Epa.Engine.Models/obj/
 EPA.Engine.Repository/obj/
+Project-EPA-OpenAI/Epa.Engine.DB/obj/
+Project-EPA-OpenAI/Epa.Engine.DB/bin/
+Project-EPA-OpenAI/Epa.Engine.Models/obj/Epa.Engine.Models.csproj.nuget.dgspec.json
+Project-EPA-OpenAI/Epa.Engine.Models/obj/
+Project-EPA-OpenAI/EPA.Engine.Repository/bin/
+Project-EPA-OpenAI/EPA.Engine.Repository/obj/
+Project-EPA-OpenAI/Epa.Engine.Models/bin/Debug/net7.0/Epa.Engine.Models.pdb
+Project-EPA-OpenAI/Epa.Engine.Models/bin/Debug/net7.0/Epa.Engine.Models.dll
+Project-EPA-OpenAI/Epa.Engine.Models/bin/
+Project-EPA-OpenAI/EPA-WebAPI/Properties/PublishProfiles/

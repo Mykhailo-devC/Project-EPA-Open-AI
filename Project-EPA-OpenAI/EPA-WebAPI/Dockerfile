@@ -10,6 +10,8 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["EPA-WebAPI/EPA-WebAPI.csproj", "EPA-WebAPI/"]
+COPY ["Epa.Engine.DB/Epa.Engine.DB.csproj", "Epa.Engine.DB/"]
+COPY ["Epa.Engine.Models/Epa.Engine.Models.csproj", "Epa.Engine.Models/"]
 RUN dotnet restore "EPA-WebAPI/EPA-WebAPI.csproj"
 COPY . .
 WORKDIR "/src/EPA-WebAPI"
