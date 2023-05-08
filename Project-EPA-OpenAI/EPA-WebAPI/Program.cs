@@ -19,7 +19,7 @@ var dbPassword = Environment.GetEnvironmentVariable("MSSQL_SA_PASSWORD");
 
 //my localhost sa password: P@ssw0rd121#
 //container password: password@12345# 
-
+//Hello vovan
 var connectionString = string.Format(builder.Configuration.GetConnectionString("DefaultConnection"), dbHost, dbName, dbPassword);
 
 builder.Services.AddDbContext<EpaDbContext>(opt => opt.UseSqlServer(connectionString,
