@@ -3,7 +3,6 @@ Project-EPA-OpenAI/EPA-WebAPI/obj/
 Project-EPA-OpenAI/EPA-WebAPI/bin/
 Project-EPA-OpenAI/.vs/
 Project-EPA-OpenAI/bin/
-*.csproj
 Epa.Engine.Models/bin/
 Epa.Engine.Models/obj/
 EPA.Engine.Repository/obj/
