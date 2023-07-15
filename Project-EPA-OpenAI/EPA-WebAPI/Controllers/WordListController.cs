@@ -25,7 +25,7 @@ namespace EPA_WebAPI.Controllers
         [HttpGet]
         public async Task<IEnumerable<WordList>> Get()
         {
-            return await _dbContext.wordLists.Include(x => x.Words).ToListAsync();
+            return await _dbContext.WordLists.Include(x => x.Words).ToListAsync();
         }
 
         [HttpPost]
@@ -55,7 +55,7 @@ namespace EPA_WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var wordList = await _dbContext.wordLists.FindAsync(id);
+            var wordList = await _dbContext.WordLists.FindAsync(id);
 
             if (wordList == null)
             {
@@ -73,14 +73,14 @@ namespace EPA_WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var wordList = await _dbContext.wordLists.FindAsync(id);
+            var wordList = await _dbContext.WordLists.FindAsync(id);
 
             if(wordList == null)
             {
                 return NotFound($"No word list with id: {id}");
             }
 
-            _dbContext.wordLists.Remove(wordList);
+            _dbContext.WordLists.Remove(wordList);
             await _dbContext.SaveChangesAsync();
 
             return Ok(wordList);

@@ -1,6 +1,6 @@
 ﻿namespace Epa.Engine.Models.Entity_Models
 {
-    public class WordList
+    public class WordList : Entity
     {
         public int Id { get; set; }
         public string Name { get; set; }

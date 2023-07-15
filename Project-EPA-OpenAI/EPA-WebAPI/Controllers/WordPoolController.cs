@@ -20,7 +20,7 @@ namespace EPA_WebAPI.Controllers
         [HttpGet]
         public async Task<IEnumerable<Word>> Get()
         {
-            return await _dbContext.wordPool.ToListAsync();
+            return await _dbContext.WordPool.ToListAsync();
         }
 
         [HttpPost]
@@ -46,14 +46,14 @@ namespace EPA_WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var word = await _dbContext.wordPool.FindAsync(id);
+            var word = await _dbContext.WordPool.FindAsync(id);
 
             if (word == null)
             {
                 return NotFound($"No word with id: {id}");
             }
 
-            _dbContext.wordPool.Remove(word);
+            _dbContext.WordPool.Remove(word);
             await _dbContext.SaveChangesAsync();
 
             return Ok(word);

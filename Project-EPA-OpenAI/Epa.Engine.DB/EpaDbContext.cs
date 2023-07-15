@@ -25,8 +25,8 @@ namespace Epa.Engine.DB
             }
         }
 
-        public DbSet<WordList> wordLists { get; set; }
-        public DbSet<Word> wordPool { get; set; }
+        public DbSet<WordList> WordLists { get; set; }
+        public DbSet<Word> WordPool { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,7 +60,7 @@ namespace Epa.Engine.DB
             var wordList = new WordList()
             {
                 Id = 1,
-                Name = "Fruits",
+                Name = "Fruits"
             };
 
             builder.Entity<WordList>().HasData(wordList);

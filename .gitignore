@@ -16,3 +16,6 @@ Project-EPA-OpenAI/Epa.Engine.Models/bin/Debug/net7.0/Epa.Engine.Models.pdb
 Project-EPA-OpenAI/Epa.Engine.Models/bin/Debug/net7.0/Epa.Engine.Models.dll
 Project-EPA-OpenAI/Epa.Engine.Models/bin/
 Project-EPA-OpenAI/EPA-WebAPI/Properties/PublishProfiles/
+CLIPS/
+Epa.Engine.DB.Tests/bin/
+Epa.Engine.DB.Tests/obj/

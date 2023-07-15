@@ -1,6 +1,6 @@
 ﻿namespace Epa.Engine.Models.Entity_Models
 {
-    public class Word
+    public class Word : Entity
     {
         public int Id { get; set; }
         public string Value { get; set; }
