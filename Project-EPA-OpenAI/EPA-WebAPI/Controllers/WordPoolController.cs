@@ -1,6 +1,7 @@
 ﻿using Epa.Engine.DB;
 using Epa.Engine.Models.DTO_Models;
 using Epa.Engine.Models.Entity_Models;
+using Epa.Engine.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,53 +11,60 @@ namespace EPA_WebAPI.Controllers
     [ApiController]
     public class WordPoolController : ControllerBase
     {
-        private readonly EpaDbContext _dbContext;
+        private readonly IRepository _repository;
 
-        public WordPoolController(EpaDbContext epaDb)
+        public WordPoolController(ServiceResolver.RepositoryResolver accessor)
         {
-            _dbContext = epaDb;
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<Word>> Get()
-        {
-            return await _dbContext.WordPool.ToListAsync();
+            _repository = accessor(RepositoryType.WordPool);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(WordDTO wordDto)
+        {
+            if (!ModelState.IsValid & wordDto.WordList_Id == default)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _repository.Add(wordDto);
+
+            if (!result.Success)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
+            }
+
+            return Ok(result.Result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, WordDTO wordDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var word = new Word()
+            var result = await _repository.Update(id, wordDto);
+
+            if (!result.Success)
             {
-                Value = wordDto.Value,
-                WordList_Id = wordDto.WordList_Id
-            };
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
+            }
 
-            await _dbContext.AddAsync(word);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(word);
+            return Ok(result.Result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var word = await _dbContext.WordPool.FindAsync(id);
+            var result = await _repository.Delete(id);
 
-            if (word == null)
+            if (!result.Success)
             {
-                return NotFound($"No word with id: {id}");
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            _dbContext.WordPool.Remove(word);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(word);
+            return Ok(result.Result);
         }
     }
 }

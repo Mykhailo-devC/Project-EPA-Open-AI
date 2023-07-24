@@ -213,19 +213,6 @@ namespace Epa.Engine.Tests
             }
         }
 
-        [Fact]
-        public void test()
-        {
-            using (var context = new EpaDbContext(options))
-            {
-                var type = typeof(IRepository);
-                var s = new EpaDataAccess(context);
-                var t = Convert.ChangeType(s, type);
-                   
-                Assert.IsType(type, t);
-            }
-        }
-
         public void Dispose()
         {
             using (var context = new EpaDbContext(options))

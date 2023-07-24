@@ -2,7 +2,7 @@
 
 namespace Epa.Engine.Models.DTO_Models
 {
-    public class WordListDTO
+    public class WordListDTO : DtoEntity
     {
         [Required]
         [MaxLength(50)]

@@ -1,8 +1,7 @@
-﻿using Epa.Engine.DB;
-using Epa.Engine.Models.DTO_Models;
+﻿using Epa.Engine.Models.DTO_Models;
 using Epa.Engine.Models.Entity_Models;
+using Epa.Engine.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EPA_WebAPI.Controllers
 {
@@ -10,22 +9,24 @@ namespace EPA_WebAPI.Controllers
     [ApiController]
     public class WordListController : ControllerBase
     {
-        private readonly EpaDbContext _dbContext;
+        private readonly IRepository _repository;
 
-        public WordListController(EpaDbContext epaDb)
+        public WordListController(ServiceResolver.RepositoryResolver accessor)
         {
-            _dbContext = epaDb;
+            _repository = accessor(RepositoryType.WordList);
         }
 
-        [HttpGet("Test")]
-        public IActionResult Test()
-        {
-            return Ok(_dbContext.GetType().Assembly.GetName().Name);
-        }
         [HttpGet]
-        public async Task<IEnumerable<WordList>> Get()
+        public async Task<IActionResult> GetAll()
         {
-            return await _dbContext.WordLists.Include(x => x.Words).ToListAsync();
+            var result = await _repository.GetAll();
+
+            if (!result.Success)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
+            }
+
+            return Ok(result.Result);
         }
 
         [HttpPost]
@@ -36,15 +37,14 @@ namespace EPA_WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var wordList = new WordList()
+            var result = await _repository.Add(wordListDto);
+
+            if (!result.Success)
             {
-                Name = wordListDto.Name,
-            };
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
+            }
 
-            await _dbContext.AddAsync(wordList);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(wordList);
+            return Ok(result.Result);
         }
 
         [HttpPut("{id}")]
@@ -55,35 +55,27 @@ namespace EPA_WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var wordList = await _dbContext.WordLists.FindAsync(id);
+            var result = await _repository.Update(id, wordListDto);
 
-            if (wordList == null)
+            if (!result.Success)
             {
-                return NotFound($"No word list with id: {id}");
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            wordList.Name = wordListDto.Name;
-
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(wordList);
-
+            return Ok(result.Result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var wordList = await _dbContext.WordLists.FindAsync(id);
+            var result = await _repository.Delete(id);
 
-            if(wordList == null)
+            if (!result.Success)
             {
-                return NotFound($"No word list with id: {id}");
+                return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            _dbContext.WordLists.Remove(wordList);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(wordList);
+            return Ok(result.Result);
         }
     }
 }

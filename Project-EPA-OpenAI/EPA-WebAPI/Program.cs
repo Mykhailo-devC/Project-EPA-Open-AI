@@ -1,4 +1,6 @@
 using Epa.Engine.DB;
+using Epa.Engine.Repository.EntityRepositories;
+using EPA_WebAPI;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -40,6 +42,20 @@ builder.Services.AddDbContext<EpaDbContext>(opt => opt.UseSqlServer(connectionSt
                                                                     b => b.MigrationsAssembly(
                                                                         typeof(Program).Assembly.GetName().Name
                                                                         )));
+
+builder.Services.AddScoped<WordListRepository>();
+builder.Services.AddScoped<WordPoolRepository>();
+builder.Services.AddTransient<ServiceResolver.RepositoryResolver>(serviceProvider => type =>
+{
+    switch (type)
+    {
+        case RepositoryType.WordList:
+            return serviceProvider.GetService<WordListRepository>();
+        case RepositoryType.WordPool:
+            return serviceProvider.GetService<WordPoolRepository>();
+        default: return null;
+    }
+});
 
 var app = builder.Build();
 

@@ -25,8 +25,8 @@ namespace Epa.Engine.DB
             }
         }
 
-        public DbSet<WordList> WordLists { get; set; }
-        public DbSet<Word> WordPool { get; set; }
+        public virtual DbSet<WordList> WordLists { get; set; }
+        public virtual DbSet<Word> WordPool { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

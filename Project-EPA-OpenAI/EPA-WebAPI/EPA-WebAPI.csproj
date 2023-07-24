@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Epa.Engine.DB\Epa.Engine.DB.csproj" />
-    <ProjectReference Include="..\Epa.Engine.Models\Epa.Engine.Models.csproj" />
+    <ProjectReference Include="..\EPA.Engine.Repository\Epa.Engine.Repository.csproj" />
   </ItemGroup>
 
 </Project>

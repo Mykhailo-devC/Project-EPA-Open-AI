@@ -15,13 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epa.Engine.DB", "Epa.Engine
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epa.Engine.Models", "Epa.Engine.Models\Epa.Engine.Models.csproj", "{A66F89E6-3F22-4A30-B929-C6D2FAB1A6D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPA.Engine.Repository", "EPA.Engine.Repository\EPA.Engine.Repository.csproj", "{A7CA66A6-2F19-4EAB-8322-4144C968B452}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epa.Engine.Repository", "EPA.Engine.Repository\Epa.Engine.Repository.csproj", "{A7CA66A6-2F19-4EAB-8322-4144C968B452}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EPA.Engine", "EPA.Engine", "{0039B8A5-9ADB-4063-B0A5-6B79F8932EC8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1D3F7BA3-D309-4DDB-B9E8-2B9C41F0864A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epa.Engine.Tests", "..\Epa.Engine.DB.Tests\Epa.Engine.Tests.csproj", "{7A4B83B0-7B8F-4F4F-947B-3A3A0C0BF33F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epa.Engine.Tests", "..\Epa.Engine.DB.Tests\Epa.Engine.Tests.csproj", "{7A4B83B0-7B8F-4F4F-947B-3A3A0C0BF33F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

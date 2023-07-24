@@ -1,65 +1,122 @@
-﻿using Epa.Engine.DB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EntityFrameworkCoreMock;
+using Epa.Engine.DB;
+using Epa.Engine.Models.DTO_Models;
+using Epa.Engine.Models.Entity_Models;
+using Epa.Engine.Repository;
+using Epa.Engine.Repository.EntityRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Epa.Engine.Tests
 {
     public class EpaRepositoryTests
     {
-    }
-
-    public interface IRepository
-    {
-        public void Get();
-        public void Update(int id);
-    }
-
-    public class EpaDataAccess : EpaDbWraper, IRepository 
-    {
-        public EpaDataAccess(EpaDbContext context)
-            : base(context)
+        public IRepository repository { get; set; }
+        public DbContextMock<EpaDbContext> mockDbContext { get; set; }
+        public EpaRepositoryTests()
         {
+            mockDbContext = new DbContextMock<EpaDbContext>(new DbContextOptionsBuilder<EpaDbContext>().Options);
+            repository = new WordListRepository(mockDbContext.Object);
         }
 
-        public void Get()
+        [Fact]
+        public async void GetAllWordLists()
         {
-            throw new NotImplementedException();
+            var expected = new List<WordList> {
+                             new WordList { Id = 1, Name = "Fruits" },
+                             new WordList { Id = 2, Name = "Vagetables" }
+                         };
+
+            var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordLists, expected);
+
+            var result = await repository.GetAll();
+            Assert.True(result.Success, result.Message);
+
+            foreach(var actual in result.Result.Cast<WordList>())
+            {
+                Assert.Contains(expected, x => x.Id == actual.Id &&
+                                           x.Name == actual.Name);
+            }
         }
 
-        public void Update(int id)
+        [Fact]
+        public async void GetWordListById()
         {
-            throw new NotImplementedException();
-        }
-    }
+            var expected = new List<WordList> {
+                             new WordList { Id = 1, Name = "Fruits" }
+                         };
 
-    public interface IDataTransferObject
-    {
+            var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordLists, expected);
 
-    }
+            var result = await repository.Get(1);
+            Assert.True(result.Success, result.Message);
 
-    public class EpaDbWraper : IDisposable
-    {
-        protected readonly EpaDbContext _context;
-        public EpaDbWraper(EpaDbContext context)
-        {
-            _context = context;
+            var actual = result.Result.Single() as WordList;
+            Assert.Contains(expected, x => x.Id == actual.Id &&
+                                           x.Name == actual.Name);
         }
 
-        protected void Save()
+        [Theory]
+        [InlineData("List1")]
+        [InlineData("List2")]
+        [InlineData("List3")]
+        public async void AddNewWordList(string name)
         {
-            _context.SaveChanges();
-        }
-        protected async Task SaveAsync()
-        {
-            await _context.SaveChangesAsync();
+            var expected = new List<WordList> {
+                             new WordList { Id = 0, Name = name },
+                         };
+
+            var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordLists);
+
+            var result = await repository.Add(new WordListDTO {Name = name });
+            Assert.True(result.Success, result.Message);
+
+            var actual = repository.Get(0).Result.Result.Cast<WordList>().Single();
+            Assert.Contains(expected, x => x.Id == actual.Id &&
+                                           x.Name == actual.Name);
         }
 
-        public void Dispose()
+        [Theory]
+        [InlineData("List1")]
+        [InlineData("List2")]
+        [InlineData("List3")]
+        public async void UpdateWordList(string name)
         {
-            _context.Dispose();
+            var initData = new List<WordList> {
+                             new WordList { Id = 1, Name = "SomeName" },
+                         };
+
+            var expected = new List<WordList> {
+                             new WordList { Id = 1, Name = name },
+                         };
+
+            var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordLists, initData);
+
+            var result = await repository.Update(1, new WordListDTO { Name = name });
+            Assert.True(result.Success, result.Message);
+
+            var actual = repository.Get(1).Result.Result.Cast<WordList>().Single();
+            Assert.Contains(expected, x => x.Id == actual.Id &&
+                                           x.Name == actual.Name);
+        }
+
+        [Fact]
+        public async void DeleteWordList()
+        {
+            var expected = new List<WordList> {
+                             new WordList { Id = 1, Name = "SomeName" },
+                         };
+
+            var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordLists, expected);
+
+            var result = await repository.Delete(1);
+            Assert.True(result.Success, result.Message);
+
+            var actual = result.Result.Single() as WordList;
+            Assert.Contains(expected, x => x.Id == actual.Id &&
+                                           x.Name == actual.Name);
+
+            var emptyResult = await repository.GetAll();
+            Assert.Empty(emptyResult.Result);
         }
     }
 }
