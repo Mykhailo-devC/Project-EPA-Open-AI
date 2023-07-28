@@ -27,6 +27,7 @@ namespace Epa.Engine.DB
 
         public virtual DbSet<WordList> WordLists { get; set; }
         public virtual DbSet<Word> WordPool { get; set; }
+        public virtual DbSet<WordListWord> WordListWords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,8 +37,10 @@ namespace Epa.Engine.DB
                 entity.Property(x => x.Id).ValueGeneratedOnAdd();
                 entity.Property(x => x.Name).HasMaxLength(50);
                 entity.Property(x => x.CreationDate).HasDefaultValue(DateTime.Now);
-                entity.HasMany(x => x.Words).WithOne(x => x.WordList)
-                    .OnDelete(DeleteBehavior.SetNull);
+                entity.HasMany(x => x.Words).WithMany(x => x.WordLists)
+                    .UsingEntity<WordListWord>();
+                entity.HasMany(x => x.WordList_Word).WithOne(x => x.WordList)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Word>(entity =>
@@ -45,14 +48,31 @@ namespace Epa.Engine.DB
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Id).ValueGeneratedOnAdd();
                 entity.Property(x => x.Value).HasMaxLength(50);
-                entity.HasOne(x => x.WordList).WithMany(x => x.Words)
-                    .HasForeignKey(x => x.WordList_Id)
-                    .HasConstraintName("FK__WordList__CustomWord")
-                    .OnDelete(DeleteBehavior.SetNull);
+                entity.HasIndex(x => x.Value).IsUnique();
+                entity.HasMany(x => x.WordLists).WithMany(x => x.Words)
+                    .UsingEntity<WordListWord>();
+                entity.HasMany(x => x.WordList_Word).WithOne(x => x.Word)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity<WordListWord>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Id).ValueGeneratedOnAdd();
+                entity.HasOne(x => x.WordList)
+                      .WithMany(x => x.WordList_Word)
+                      .HasForeignKey(x => x.WordList_Id)
+                      .HasConstraintName("FK__WordListWord__WordList_Id_Key")
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(x => x.Word)
+                      .WithMany(x => x.WordList_Word)
+                      .HasForeignKey(x => x.Word_Id)
+                      .HasConstraintName("FK__WordListWord__Word_Id_Key")
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
             this.ApplyWordListSeed(modelBuilder);
             this.ApplyWordPoolSeed(modelBuilder);
+            this.ApplyWordListWordSeed(modelBuilder);
 
         }
         private void ApplyWordListSeed(ModelBuilder builder)
@@ -66,6 +86,45 @@ namespace Epa.Engine.DB
             builder.Entity<WordList>().HasData(wordList);
         }
 
+        private void ApplyWordListWordSeed(ModelBuilder builder)
+        {
+            var wordMatching = new List<WordListWord>()
+            {
+                new WordListWord()
+                {
+                    Id = 1,
+                    WordList_Id = 1,
+                    Word_Id = 1
+                },
+                new WordListWord()
+                {
+                    Id = 2,
+                    WordList_Id = 1,
+                    Word_Id = 2
+                },
+                new WordListWord()
+                {
+                    Id = 3,
+                    WordList_Id = 1,
+                    Word_Id = 3
+                },
+                new WordListWord()
+                {
+                    Id = 4,
+                    WordList_Id = 1,
+                    Word_Id = 4
+                },
+                new WordListWord()
+                {
+                    Id = 5,
+                    WordList_Id = 1,
+                    Word_Id = 5
+                }
+            };
+
+            builder.Entity<WordListWord>().HasData(wordMatching);
+        }
+
         private void ApplyWordPoolSeed(ModelBuilder builder)
         {
             var wordPool = new List<Word>()
@@ -74,31 +133,26 @@ namespace Epa.Engine.DB
                 {
                     Id = 1,
                     Value = "Orange",
-                    WordList_Id = 1
                 },
                 new Word()
                 {
                     Id = 2,
                     Value = "Apple",
-                    WordList_Id = 1
                 },
                 new Word()
                 {
                     Id = 3,
-                    Value = "Cherry",
-                    WordList_Id = 1
+                    Value = "Cherry"
                 },
                 new Word()
                 {
                     Id = 4,
-                    Value = "Strawberry",
-                    WordList_Id = 1
+                    Value = "Strawberry"
                 },
                 new Word()
                 {
                     Id = 5,
-                    Value = "Peach",
-                    WordList_Id = 1
+                    Value = "Peach"
                 }
             };
 

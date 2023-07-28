@@ -5,17 +5,20 @@ using Epa.Engine.Models.Entity_Models;
 using Epa.Engine.Repository;
 using Epa.Engine.Repository.EntityRepositories;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
-namespace Epa.Engine.Tests
+namespace Epa.Engine.Tests.RepositoryTests
 {
-    public class EpaRepositoryTests
+    public class WordListRepositoryTests
     {
         public IRepository repository { get; set; }
         public DbContextMock<EpaDbContext> mockDbContext { get; set; }
-        public EpaRepositoryTests()
+        public WordListRepositoryTests()
         {
             mockDbContext = new DbContextMock<EpaDbContext>(new DbContextOptionsBuilder<EpaDbContext>().Options);
-            repository = new WordListRepository(mockDbContext.Object);
+            var mockResolver = new Mock<ServiceResolver.RepositoryResolver>();
+            mockResolver.Setup(x => x.Target).Returns(new WordPoolRepository(mockDbContext.Object));
+            repository = new WordListRepository(mockDbContext.Object,  mockResolver.Object);
         }
 
         [Fact]
@@ -31,7 +34,7 @@ namespace Epa.Engine.Tests
             var result = await repository.GetAll();
             Assert.True(result.Success, result.Message);
 
-            foreach(var actual in result.Result.Cast<WordList>())
+            foreach (var actual in result.Result.Cast<WordList>())
             {
                 Assert.Contains(expected, x => x.Id == actual.Id &&
                                            x.Name == actual.Name);
@@ -67,7 +70,7 @@ namespace Epa.Engine.Tests
 
             var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordLists);
 
-            var result = await repository.Add(new WordListDTO {Name = name });
+            var result = await repository.Add(new WordListDTO { Name = name });
             Assert.True(result.Success, result.Message);
 
             var actual = repository.Get(0).Result.Result.Cast<WordList>().Single();

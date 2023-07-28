@@ -1,6 +1,6 @@
-﻿using Epa.Engine.Repository;
+﻿using Epa.Engine.Models.Logic_Models;
 
-namespace EPA_WebAPI
+namespace Epa.Engine.Repository
 {
     public static class ServiceResolver
     {

@@ -1,5 +1,5 @@
 ﻿using Epa.Engine.Models.DTO_Models;
-using Epa.Engine.Models.Entity_Models;
+using Epa.Engine.Models.Logic_Models;
 using Epa.Engine.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +16,7 @@ namespace EPA_WebAPI.Controllers
             _repository = accessor(RepositoryType.WordList);
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -23,7 +24,7 @@ namespace EPA_WebAPI.Controllers
 
             if (!result.Success)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
+                return NotFound(result.Message);
             }
 
             return Ok(result.Result);

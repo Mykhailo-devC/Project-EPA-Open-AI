@@ -1,9 +1,7 @@
-﻿using Epa.Engine.DB;
-using Epa.Engine.Models.DTO_Models;
-using Epa.Engine.Models.Entity_Models;
+﻿using Epa.Engine.Models.DTO_Models;
+using Epa.Engine.Models.Logic_Models;
 using Epa.Engine.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EPA_WebAPI.Controllers
 {
@@ -54,10 +52,10 @@ namespace EPA_WebAPI.Controllers
             return Ok(result.Result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}/{listId}")]
+        public async Task<IActionResult> Delete(int id, int listId)
         {
-            var result = await _repository.Delete(id);
+            var result = await _repository.Delete(id, listId);
 
             if (!result.Success)
             {

@@ -15,6 +15,7 @@ namespace Epa.Engine.Repository
         abstract public Task<IQueryResult> GetAll();
         abstract public Task<IQueryResult> Add(DtoEntity item);
         abstract public Task<IQueryResult> Update(int id, DtoEntity item);
+        abstract public Task<IQueryResult> Delete(int id, int listId);
         abstract public Task<IQueryResult> Delete(int id);
     }
 }

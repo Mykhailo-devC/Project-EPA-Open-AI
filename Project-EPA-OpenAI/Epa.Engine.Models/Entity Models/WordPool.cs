@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Value { get; set; }
-        public int? WordList_Id { get; set; }
-        public WordList WordList { get; set; }
+        public IEnumerable<WordList> WordLists { get; set; }
+        public IEnumerable<WordListWord> WordList_Word { get; set; }
     }
 }

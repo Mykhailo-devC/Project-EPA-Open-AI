@@ -4,7 +4,7 @@ namespace Epa.Engine.DB
 {
     public class EpaDbWraper : IDisposable
     {
-        protected readonly EpaDbContext _context;
+        public readonly EpaDbContext _context;
         protected EpaDbWraper(EpaDbContext context)
         {
             _context = context;

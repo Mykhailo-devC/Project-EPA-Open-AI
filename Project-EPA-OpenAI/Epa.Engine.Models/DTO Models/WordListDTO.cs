@@ -7,5 +7,6 @@ namespace Epa.Engine.Models.DTO_Models
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
+        public List<string> Words { get; set; } = new();
     }
 }

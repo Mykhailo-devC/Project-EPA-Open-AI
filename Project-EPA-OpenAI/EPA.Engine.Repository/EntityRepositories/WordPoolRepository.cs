@@ -2,6 +2,8 @@
 using Epa.Engine.Models;
 using Epa.Engine.Models.DTO_Models;
 using Epa.Engine.Models.Entity_Models;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Epa.Engine.Repository.EntityRepositories
 {
@@ -25,22 +27,102 @@ namespace Epa.Engine.Repository.EntityRepositories
         {
             try
             {
+                await _context.Database.BeginTransactionAsync();
                 var dtoItem = (WordDTO)item;
-                var newWord = new Word
+
+                var word = await _context.WordPool.FirstOrDefaultAsync(x => x.Value == dtoItem.Value);
+                if (word == null)
                 {
-                    Value = dtoItem.Value,
+                    word = new Word
+                    {
+                        Value = dtoItem.Value,
+                    };
+                    var result = await _context.WordPool.AddAsync(word);
+                    await SaveAsync();
+                }
+                
+                var wordMatching = new WordListWord()
+                {
                     WordList_Id = dtoItem.WordList_Id,
+                    Word_Id = word.Id
                 };
 
-                var result = await _context.WordPool.AddAsync(newWord);
+                await _context.WordListWords.AddAsync(wordMatching);
                 await SaveAsync();
-
+                await _context.Database.CommitTransactionAsync();
                 return new QueryResult<Word>
                 {
-                    Message = string.Format("New entity with id {0} was created in WordLsts table", result?.Entity.Id),
+                    Message = string.Format("New entity with id {0} was created in WordLits table", word.Id),
                     Success = true,
-                    Result = new List<Word>() { result?.Entity }
+                    Result = new List<Word>() { word }
                 };
+            }
+            catch (Exception ex)
+            {
+                await _context.Database.RollbackTransactionAsync();
+                return new QueryResult<Word>
+                {
+                    Message = $"Error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
+                    Success = false,
+                    Result = null
+                };
+            }
+        }
+
+        public async override Task<IQueryResult> Delete(int id, int listId)
+        {
+            try
+            {
+                await _context.Database.BeginTransactionAsync();
+                var word = await _context.WordPool.FindAsync(id);
+
+                if (word == null)
+                {
+                    return new QueryResult<Word>
+                    {
+                        Message = $"Entity with id {id} doesn't exist.",
+                        Success = false,
+                        Result = null
+                    };
+                }
+
+                var wordMatchingList = await _context.WordListWords.Where(x => x.Word_Id == id).ToListAsync();
+
+                if (listId != default && (wordMatchingList != null || wordMatchingList.Count != 0))
+                {
+                    var wordMatches = wordMatchingList.Where(x => x.WordList_Id == listId).ToList();
+                    _context.WordListWords.RemoveRange(wordMatches);
+                    await SaveAsync();
+
+                    if (!await _context.WordListWords.AnyAsync(x => x.Word_Id == id))
+                    {
+                        _context.WordPool.Remove(word);
+                    }
+
+                    await SaveAsync();
+                    await _context.Database.CommitTransactionAsync();
+
+                    return new QueryResult<Word>
+                    {
+                        Message = string.Format("Word with id {0} and WordList with id {1}, " +
+                                                "where no more connected by WordListWord entities.", word.Id, listId),
+                        Success = true,
+                        Result = new List<Word>() { word }
+                    };
+                }
+                else
+                {
+                    _context.WordPool.Remove(word);
+                    await SaveAsync();
+                    await _context.Database.CommitTransactionAsync();
+
+                    return new QueryResult<Word>
+                    {
+                        Message = string.Format("Entity with id {0} was deleted from WordLits table", word.Id),
+                        Success = true,
+                        Result = new List<Word>() { word }
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -55,50 +137,17 @@ namespace Epa.Engine.Repository.EntityRepositories
 
         public async override Task<IQueryResult> Delete(int id)
         {
-            try
-            {
-                var result = await _context.WordPool.FindAsync(id);
-
-                if (result == null)
-                {
-                    return new QueryResult<Word>
-                    {
-                        Message = $"Entity with id {id} doesn't exist.",
-                        Success = false,
-                        Result = null
-                    };
-                }
-
-                _context.WordPool.Remove(result);
-                await SaveAsync();
-
-                return new QueryResult<Word>
-                {
-                    Message = string.Format("New entity with id {0} was updated in WordLsts table", result.Id),
-                    Success = true,
-                    Result = new List<Word>() { result }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new QueryResult<Word>
-                {
-                    Message = $"Error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
-                    Success = false,
-                    Result = null
-                };
-            }
+            return await Delete(id, default);
         }
-        
+
         public async override Task<IQueryResult> Update(int id, DtoEntity item)
         {
             try
             {
                 var dtoItem = (WordDTO)item;
+                var word = await _context.WordPool.FindAsync(id);
 
-                var result = await _context.WordPool.FindAsync(id);
-
-                if (result == null)
+                if (word == null)
                 {
                     return new QueryResult<Word>
                     {
@@ -108,20 +157,15 @@ namespace Epa.Engine.Repository.EntityRepositories
                     };
                 }
 
-                result.Value = dtoItem.Value;
-                
-                if(dtoItem.WordList_Id != default)
-                {
-                    result.WordList_Id = dtoItem.WordList_Id;
-                }
+                word.Value = dtoItem.Value;
 
                 await SaveAsync();
 
                 return new QueryResult<Word>
                 {
-                    Message = string.Format("New entity with id {0} was updated in WordLsts table", result.Id),
+                    Message = string.Format("New entity with id {0} was updated in WordLits table", word.Id),
                     Success = true,
-                    Result = new List<Word>() { result }
+                    Result = new List<Word>() { word }
                 };
             }
             catch (Exception ex)

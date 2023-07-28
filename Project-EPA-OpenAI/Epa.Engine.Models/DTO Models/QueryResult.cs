@@ -1,4 +1,6 @@
-﻿namespace Epa.Engine.Models.DTO_Models
+﻿using Epa.Engine.Models.Entity_Models;
+
+namespace Epa.Engine.Models.DTO_Models
 {
     public class QueryResult<TEntity> : IQueryResult<TEntity> where TEntity : Entity
     {

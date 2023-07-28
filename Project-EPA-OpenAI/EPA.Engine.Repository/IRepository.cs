@@ -9,6 +9,7 @@ namespace Epa.Engine.Repository
         public Task<IQueryResult> GetAll();
         public Task<IQueryResult> Add(DtoEntity item);
         public Task<IQueryResult> Update(int id, DtoEntity item);
+        public Task<IQueryResult> Delete(int id, int listId);
         public Task<IQueryResult> Delete(int id);
     }
 }
