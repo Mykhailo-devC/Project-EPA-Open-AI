@@ -42,6 +42,7 @@ namespace Epa.Engine.Tests
             {
                 Assert.True(context.WordLists.Any());
                 Assert.True(context.WordPool.Any());
+                Assert.True(context.WordListWords.Any());
             }
         }
 
@@ -74,11 +75,32 @@ namespace Epa.Engine.Tests
         {
             using (var context = new EpaDbContext(options))
             {
-                var seedWordPool = context.WordPool.ToList();
+                var seedWordPool = context.WordPool.Include(x => x.WordList_Word).ToList();
 
                 Assert.Contains(seedWordPool, x => x.Value == value &&
                                                     x.Id == id &&
-                                                    x.WordList == null &&
+                                                    x.WordLists == null &&
+                                                    x.WordList_Word
+                                                    .First(x => x.Id == id).WordList_Id == list_id);
+
+                Assert.Equal(5, seedWordPool.Count);
+            }
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        public void CheckSeedDataOfWordPoolWordTable(int id, int list_id = 1)
+        {
+            using (var context = new EpaDbContext(options))
+            {
+                var seedWordPool = context.WordListWords.ToList();
+
+                Assert.Contains(seedWordPool, x =>  x.Id == id &&
+                                                    x.Word_Id == id &&
                                                     x.WordList_Id == list_id);
 
                 Assert.Equal(5, seedWordPool.Count);
@@ -90,10 +112,10 @@ namespace Epa.Engine.Tests
         {
             using (var context = new EpaDbContext(options))
             {
-                var word = context.WordPool.Include(x => x.WordList).FirstOrDefault();
+                var word = context.WordPool.Include(x => x.WordLists).FirstOrDefault();
                 var wordList = context.WordLists.FirstOrDefault();
 
-                Assert.Equal(wordList.Name, word.WordList.Name);
+                Assert.Equal(wordList.Name, word.WordLists.First().Name);
             }
         }
 
@@ -103,7 +125,7 @@ namespace Epa.Engine.Tests
             using (var context = new EpaDbContext(options))
             {
                 var wordList = context.WordLists.Include(x => x.Words).FirstOrDefault();
-                var words = context.WordPool.Where(x => x.WordList_Id == wordList.Id).ToList();
+                var words = context.WordPool.Where(x => x.WordList_Word.Any(x => x.WordList_Id == wordList.Id)).ToList();
 
                 foreach (var word in words)
                 {
@@ -114,12 +136,15 @@ namespace Epa.Engine.Tests
 
         [Theory]
         [InlineData("Fruit1", 1)]
-        [InlineData("Fruit1", null)]
-        public void AbleToAddWordPoolItems(string value, int? wordListId)
+        public void AddWordPoolItems(string value, int wordListId)
         {
             var newWord = new Word()
             {
                 Value = value,
+            };
+
+            var wordMathcing = new WordListWord()
+            {
                 WordList_Id = wordListId
             };
 
@@ -127,20 +152,24 @@ namespace Epa.Engine.Tests
             {
                 context.WordPool.Add(newWord);
                 context.SaveChanges();
+
+                wordMathcing.Word_Id = newWord.Id;
+                context.WordListWords.Add(wordMathcing);
+                context.SaveChanges();
             }
 
             using (var context = new EpaDbContext(options))
             {
-                var word = context.WordPool.Where(x => x.Value == value).FirstOrDefault();
+                var word = context.WordPool.Include(x => x.WordList_Word).Where(x => x.Value == value).FirstOrDefault();
 
                 Assert.Equal(word.Value, newWord.Value);
-                Assert.Equal(word.WordList_Id, newWord.WordList_Id);
+                Assert.Equal(word.WordList_Word.First().WordList_Id, wordMathcing.WordList_Id);
             }
         }
 
         [Theory]
         [InlineData("List1")]
-        public void AbleToAddWordLists(string name)
+        public void AddWordLists(string name)
         {
             var newWordList = new WordList()
             {
@@ -163,7 +192,7 @@ namespace Epa.Engine.Tests
 
         [Theory]
         [InlineData(1)]
-        public void AbleToRemoveWordLists(int id)
+        public void RemoveWordLists(int id)
         {
             using (var context = new EpaDbContext(options))
             {
@@ -178,12 +207,6 @@ namespace Epa.Engine.Tests
 
                 Assert.DoesNotContain(wordList, x => x.Id == id);
 
-                var words = context.WordPool.Include(x => x.WordList).ToList();
-
-                foreach(var word in words)
-                {
-                    Assert.Null(word.WordList);
-                }
             }
         }
 
@@ -191,7 +214,7 @@ namespace Epa.Engine.Tests
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public void AbleToRemoveWordsFromWordPool(int id)
+        public void RemoveWordsFromWordPool(int id)
         {
             using (var context = new EpaDbContext(options))
             {

@@ -29,6 +29,7 @@ namespace Epa.Engine.Tests.RepositoryTests
                          };
 
             var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordPool);
+            mockDbContext.CreateDbSetMock(x => x.WordListWords);
 
             var result = await repository.Add(new WordDTO { Value = name });
             Assert.True(result.Success, result.Message);
@@ -70,7 +71,7 @@ namespace Epa.Engine.Tests.RepositoryTests
                          };
 
             var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordPool, expected);
-
+            mockDbContext.CreateDbSetMock(x => x.WordListWords);
             var result = await repository.Delete(1);
             Assert.True(result.Success, result.Message);
 

@@ -2,6 +2,7 @@
 using Epa.Engine.DB;
 using Epa.Engine.Models.DTO_Models;
 using Epa.Engine.Models.Entity_Models;
+using Epa.Engine.Models.Logic_Models;
 using Epa.Engine.Repository;
 using Epa.Engine.Repository.EntityRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,8 @@ namespace Epa.Engine.Tests.RepositoryTests
         {
             mockDbContext = new DbContextMock<EpaDbContext>(new DbContextOptionsBuilder<EpaDbContext>().Options);
             var mockResolver = new Mock<ServiceResolver.RepositoryResolver>();
-            mockResolver.Setup(x => x.Target).Returns(new WordPoolRepository(mockDbContext.Object));
+            var wordPoolMock = new Mock<WordPoolRepository>(mockDbContext.Object);
+            mockResolver.Setup(x => x.Invoke(RepositoryType.WordPool)).Returns(wordPoolMock.Object);
             repository = new WordListRepository(mockDbContext.Object,  mockResolver.Object);
         }
 
@@ -106,7 +108,7 @@ namespace Epa.Engine.Tests.RepositoryTests
         public async void DeleteWordList()
         {
             var expected = new List<WordList> {
-                             new WordList { Id = 1, Name = "SomeName" },
+                             new WordList { Id = 1, Name = "SomeName", Words = new List<Word>() },
                          };
 
             var mockDbSet = mockDbContext.CreateDbSetMock(x => x.WordLists, expected);

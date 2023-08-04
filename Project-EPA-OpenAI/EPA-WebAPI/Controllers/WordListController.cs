@@ -27,7 +27,7 @@ namespace EPA_WebAPI.Controllers
                 return NotFound(result.Message);
             }
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace EPA_WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
@@ -63,7 +63,7 @@ namespace EPA_WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
@@ -76,7 +76,7 @@ namespace EPA_WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            return Ok(result.Result);
+            return Ok(result);
         }
     }
 }

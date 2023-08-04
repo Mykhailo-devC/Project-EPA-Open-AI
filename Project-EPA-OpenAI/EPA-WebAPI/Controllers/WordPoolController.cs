@@ -31,7 +31,7 @@ namespace EPA_WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
@@ -49,11 +49,11 @@ namespace EPA_WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
-        [HttpDelete("{id}/{listId}")]
-        public async Task<IActionResult> Delete(int id, int listId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, [FromQuery]int listId = default)
         {
             var result = await _repository.Delete(id, listId);
 
@@ -62,7 +62,7 @@ namespace EPA_WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Message);
             }
 
-            return Ok(result.Result);
+            return Ok(result);
         }
     }
 }

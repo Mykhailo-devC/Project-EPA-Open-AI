@@ -20,6 +20,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 string dbHost;
 string dbName;
 string dbPassword;
+string connectionString;
 
 if (usingDocker)
 {
@@ -32,17 +33,16 @@ else
     dbHost = ".";
     dbName = "epa_db";
     dbPassword = "P@ssw0rd121#";
+    
 }
+
 
 //my localhost sa password: P@ssw0rd121#
 //container password: password@12345# 
 
-var connectionString = string.Format(builder.Configuration.GetConnectionString("DefaultConnection"), dbHost, dbName, dbPassword);
+connectionString = string.Format(builder.Configuration.GetConnectionString("DefaultConnection"), dbHost, dbName, dbPassword);
 
-builder.Services.AddDbContext<EpaDbContext>(opt => opt.UseSqlServer(connectionString,
-                                                                    b => b.MigrationsAssembly(
-                                                                        typeof(Program).Assembly.GetName().Name
-                                                                        )));
+builder.Services.AddDbContext<EpaDbContext>(opt => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly("EPA-WebAPI")));
 
 builder.Services.AddScoped<WordListRepository>();
 builder.Services.AddScoped<WordPoolRepository>();
