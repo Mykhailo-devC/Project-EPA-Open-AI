@@ -7,10 +7,18 @@ namespace Epa.Engine.Repository
     public abstract class Repository
         : EpaDbWraper, IRepository
     {
-        public Repository(EpaDbContext context)
+        public TransactionHandler _transactionHandler;
+        public Repository(EpaDbContext context, TransactionHandler transactionHandler)
             : base(context)
         {
+            _transactionHandler = transactionHandler;
         }
+
+        protected void SetTransaction()
+        {
+            _transactionHandler.CurrentTransaction = _context.Database.CurrentTransaction;
+        }
+
         abstract public Task<IQueryResult> Get(int id);
         abstract public Task<IQueryResult> GetAll();
         abstract public Task<IQueryResult> Add(DtoEntity item);

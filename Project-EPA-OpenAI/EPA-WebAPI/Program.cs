@@ -33,17 +33,18 @@ else
     dbHost = ".";
     dbName = "epa_db";
     dbPassword = "P@ssw0rd121#";
-    
 }
 
 
 //my localhost sa password: P@ssw0rd121#
 //container password: password@12345# 
+//connectionString = "Data Source=.;Initial Catalog=epa_db;User ID=sa;Password=P@ssw0rd121#;TrustServerCertificate=True";
 
-connectionString = string.Format(builder.Configuration.GetConnectionString("DefaultConnection"), dbHost, dbName, dbPassword);
+connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<EpaDbContext>(opt => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly("EPA-WebAPI")));
 
+builder.Services.AddSingleton<TransactionHandler>();
 builder.Services.AddScoped<WordListRepository>();
 builder.Services.AddScoped<WordPoolRepository>();
 builder.Services.AddTransient<ServiceResolver.RepositoryResolver>(serviceProvider => type =>
@@ -61,8 +62,6 @@ builder.Services.AddTransient<ServiceResolver.RepositoryResolver>(serviceProvide
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
-
 
 
 

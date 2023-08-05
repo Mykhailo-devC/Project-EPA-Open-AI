@@ -10,7 +10,8 @@ namespace Epa.Engine.Repository.EntityRepositories
     public class WordListRepository : Repository
     {
         private readonly IRepository _wordPoolRepos;
-        public WordListRepository(EpaDbContext context, ServiceResolver.RepositoryResolver accessor) : base(context)
+        public WordListRepository(EpaDbContext context, TransactionHandler transactionHandler, ServiceResolver.RepositoryResolver accessor)
+            : base(context, transactionHandler)
         {
             _wordPoolRepos = accessor(RepositoryType.WordPool);
         }
@@ -22,7 +23,7 @@ namespace Epa.Engine.Repository.EntityRepositories
                 var result = await _context.WordLists.Include(x => x.Words)
                                                      .Where(x => x.Id == id)
                                                      .FirstOrDefaultAsync();
-
+                
                 if (result == null)
                 {
                     return new QueryResult<WordList>
@@ -80,6 +81,7 @@ namespace Epa.Engine.Repository.EntityRepositories
             try
             {
                 await _context.Database.BeginTransactionAsync();
+                SetTransaction();
 
                 var dtoWordList = (WordListDTO)item;
                 var newWordList = new WordList
@@ -92,6 +94,7 @@ namespace Epa.Engine.Repository.EntityRepositories
 
                 if(dtoWordList.Words != null & dtoWordList.Words.Count !=0)
                 {
+
                     foreach (var word in dtoWordList.Words)
                     {
                         await _wordPoolRepos.Add(new WordDTO { Value = word, WordList_Id = newWordList.Id });
@@ -114,7 +117,7 @@ namespace Epa.Engine.Repository.EntityRepositories
                     await _context.Database.CommitTransactionAsync();
                     return new QueryResult<WordList>
                     {
-                        Message = string.Format("New entity with id {0} was created in WordLists table", newWordList),
+                        Message = string.Format("New empty entity with id {0} was created in WordLists table", newWordList),
                         Success = true,
                         Result = new List<WordList>() { newWordList }
                     };
@@ -130,6 +133,10 @@ namespace Epa.Engine.Repository.EntityRepositories
                     Success = false,
                     Result = null
                 };
+            }
+            finally
+            {
+                _transactionHandler.Dispose();
             }
         }
 
@@ -181,11 +188,15 @@ namespace Epa.Engine.Repository.EntityRepositories
         {
             try
             {
+                await _context.Database.BeginTransactionAsync();
+                SetTransaction();
+
                 var wordList = await _context.WordLists.Include(x => x.Words)
                                                      .FirstOrDefaultAsync(x => x.Id == id);
 
                 if(wordList == null)
                 {
+                    await _context.Database.RollbackTransactionAsync();
                     return new QueryResult<WordList>
                     {
                         Message = $"Entity with id {id} doesn't exist.",
@@ -201,7 +212,7 @@ namespace Epa.Engine.Repository.EntityRepositories
                 }
 
                 await SaveAsync();
-                
+                await _context.Database.CommitTransactionAsync();
                 return new QueryResult<WordList>
                 {
                     Message = string.Format("Entity with id {0} was deleted from WordLists table", wordList.Id),
@@ -211,6 +222,7 @@ namespace Epa.Engine.Repository.EntityRepositories
             }
             catch (Exception ex)
             {
+                await _context.Database.RollbackTransactionAsync();
                 return new QueryResult<WordList>
                 {
                     Message = $"Error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",

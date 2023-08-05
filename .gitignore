@@ -20,3 +20,6 @@ CLIPS/
 Epa.Engine.DB.Tests/bin/
 Epa.Engine.DB.Tests/obj/
 Epa.Engine.Common/
+Project-EPA-OpenAI/EPA-WebAPI/Properties/serviceDependencies.EpaWebApi - Web Deploy.json
+Project-EPA-OpenAI/EPA-WebAPI/Properties/serviceDependencies.Epa-WebAPI - Web Deploy.json
+Project-EPA-OpenAI/EPA-WebAPI/Properties/

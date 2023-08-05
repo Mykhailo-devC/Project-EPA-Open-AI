@@ -19,7 +19,7 @@ namespace EPA_WebAPI.Controllers
             await _dbContext.Database.EnsureDeletedAsync();
             await _dbContext.Database.EnsureCreatedAsync();
             await _dbContext.SaveChangesAsync();
-            await _dbContext.DisposeAsync();
+
             return Ok("Database - reloaded");
         }
     }

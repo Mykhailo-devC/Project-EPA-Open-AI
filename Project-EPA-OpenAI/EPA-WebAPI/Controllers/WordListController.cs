@@ -17,6 +17,19 @@ namespace EPA_WebAPI.Controllers
         }
 
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var result = await _repository.Get(id);
+
+            if (!result.Success)
+            {
+                return NotFound(result.Message);
+            }
+
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
