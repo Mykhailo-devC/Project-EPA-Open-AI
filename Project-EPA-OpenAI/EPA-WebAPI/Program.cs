@@ -15,6 +15,16 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 //my localhost sa password: P@ssw0rd121#
 //container password: password@12345# 
 builder.Services.AddDbContext<EpaDbContext>(opt => opt.UseSqlServer(GetConnectionString(ConnectionType.Local), b => b.MigrationsAssembly("EPA-WebAPI")));
@@ -43,7 +53,7 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
+app.UseCors("AllowOrigin");
 app.UseAuthorization();
 
 app.MapControllers();
