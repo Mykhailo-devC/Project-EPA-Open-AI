@@ -23,3 +23,9 @@ Epa.Engine.Common/
 Project-EPA-OpenAI/EPA-WebAPI/Properties/serviceDependencies.EpaWebApi - Web Deploy.json
 Project-EPA-OpenAI/EPA-WebAPI/Properties/serviceDependencies.Epa-WebAPI - Web Deploy.json
 Project-EPA-OpenAI/EPA-WebAPI/Properties/
+/Project-EPA-OpenAI/Epa.Common/bin/Debug/net6.0
+/Project-EPA-OpenAI/Epa.Common/obj
+/Project-EPA-OpenAI/EPA.OpenAI.Core/bin/Debug/net6.0
+/Project-EPA-OpenAI/EPA.OpenAI.Core/obj
+/Project-EPA-OpenAI/EPA.OpenAI.Models/obj
+/Project-EPA-OpenAI/EPA.OpenAI.Models/bin/Debug/net6.0
