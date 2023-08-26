@@ -4,29 +4,27 @@ networks:
   backend:
 
 services:
-  epa-db:
-    container_name: epa-database
-    image: willh/mssql-server-windows-developer:20H2
+  epa-database:
+    container_name: epa-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=password@12345# 
-      - MSSQL_PID=Standart 
+      - SA_PASSWORD=P@ssw0rd121#
     networks:
       - backend
     ports:
       - 8001:1433 
   epa-webapi:
     container_name: epa-web-api
-    image: mykhailodock/epawebapi:alfa_1.0
+    image: mykhailodock/epawebapi:1.00
     build:
       context: .
-      dockerfile: EPA-WebAPI\Dockerfile
+      dockerfile: EPA-WebAPI/Dockerfile
     networks:
       - backend
-    environment:
-      - DB_HOST=epa-db
-      - DB_NAME=epa_db 
-      - MSSQL_SA_PASSWORD=password@12345# 
     ports:
       - 8002:80 
-    
+    environment:
+      - DB_HOST=epa-database
+      - DB_NAME=epa.main-db
+      - MSSQL_SA_PASSWORD=P@ssw0rd121#

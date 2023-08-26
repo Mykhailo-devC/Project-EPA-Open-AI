@@ -1,8 +1,9 @@
-﻿using Epa.Engine.DB;
-using Epa.Engine.Models;
-using Epa.Engine.Models.DTO_Models;
+﻿using EPA.Engine.DB;
+using EPA.Engine.Models;
+using EPA.Engine.Models.DTO_Models;
+using EPA.Engine.Models.Result_Models;
 
-namespace Epa.Engine.Repository
+namespace EPA.Engine.Repository
 {
     public abstract class Repository
         : EpaDbWraper, IRepository

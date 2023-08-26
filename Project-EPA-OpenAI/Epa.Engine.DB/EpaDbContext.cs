@@ -1,9 +1,9 @@
-﻿using Epa.Engine.Models.Entity_Models;
+﻿using EPA.Engine.Models.Entity_Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Epa.Engine.DB
+namespace EPA.Engine.DB
 {
     public class EpaDbContext : DbContext
     {

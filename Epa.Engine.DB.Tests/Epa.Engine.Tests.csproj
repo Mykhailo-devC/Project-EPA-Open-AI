@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -30,9 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Project-EPA-OpenAI\Epa.Engine.DB\Epa.Engine.DB.csproj" />
-    <ProjectReference Include="..\Project-EPA-OpenAI\Epa.Engine.Models\Epa.Engine.Models.csproj" />
-    <ProjectReference Include="..\Project-EPA-OpenAI\EPA.Engine.Repository\Epa.Engine.Repository.csproj" />
+    <ProjectReference Include="..\Project-EPA-OpenAI\Epa.Engine.DB\EPA.Engine.DB.csproj" />
+    <ProjectReference Include="..\Project-EPA-OpenAI\Epa.Engine.Models\EPA.Engine.Models.csproj" />
+    <ProjectReference Include="..\Project-EPA-OpenAI\EPA.Engine.Repository\EPA.Engine.Repository.csproj" />
   </ItemGroup>
 
 </Project>

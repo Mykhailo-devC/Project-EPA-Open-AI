@@ -1,12 +1,12 @@
 ﻿using EntityFrameworkCoreMock;
-using Epa.Engine.DB;
-using Epa.Engine.Models.DTO_Models;
-using Epa.Engine.Models.Entity_Models;
-using Epa.Engine.Repository;
-using Epa.Engine.Repository.EntityRepositories;
+using EPA.Engine.DB;
+using EPA.Engine.Models.DTO_Models;
+using EPA.Engine.Models.Entity_Models;
+using EPA.Engine.Repository;
+using EPA.Engine.Repository.EntityRepositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace Epa.Engine.Tests.RepositoryTests
+namespace EPA.Engine.Tests.RepositoryTests
 {
     public class WordPoolRepositoryTests
     {
@@ -15,7 +15,7 @@ namespace Epa.Engine.Tests.RepositoryTests
         public WordPoolRepositoryTests()
         {
             mockDbContext = new DbContextMock<EpaDbContext>(new DbContextOptionsBuilder<EpaDbContext>().Options);
-            repository = new WordPoolRepository(mockDbContext.Object);
+            repository = new WordPoolRepository(mockDbContext.Object, new TransactionHandler());
         }
 
         [Theory]

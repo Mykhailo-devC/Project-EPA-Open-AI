@@ -1,8 +1,8 @@
-using Epa.Engine.DB;
-using Epa.Engine.Models.Entity_Models;
+using EPA.Engine.DB;
+using EPA.Engine.Models.Entity_Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Epa.Engine.Tests
+namespace EPA.Engine.Tests
 {
     public class EpaDbContextTests : IDisposable
     {

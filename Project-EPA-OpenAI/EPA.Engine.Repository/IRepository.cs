@@ -1,8 +1,9 @@
-﻿using Epa.Engine.Models;
-using Epa.Engine.Models.DTO_Models;
+﻿using EPA.Engine.Models;
+using EPA.Engine.Models.DTO_Models;
+using EPA.Engine.Models.Result_Models;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Epa.Engine.Repository
+namespace EPA.Engine.Repository
 {
     public interface IRepository
     {
@@ -12,11 +13,5 @@ namespace Epa.Engine.Repository
         public Task<IQueryResult> Update(int id, DtoEntity item);
         public Task<IQueryResult> Delete(int id, int listId);
         public Task<IQueryResult> Delete(int id);
-    }
-
-    public interface IRepositoryWrapper : IRepository
-    {
-        public Task<IQueryResult> Add(DtoEntity item, IDbContextTransaction transaction = null);
-        public new Task<IQueryResult> Update(int id, DtoEntity item, IDbContextTransaction transaction = null);
     }
 }

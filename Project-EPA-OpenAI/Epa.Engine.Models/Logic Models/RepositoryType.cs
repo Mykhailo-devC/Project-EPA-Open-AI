@@ -1,4 +1,4 @@
-﻿namespace Epa.Engine.Models.Logic_Models
+﻿namespace EPA.Engine.Models.Logic_Models
 {
     public enum RepositoryType
     {

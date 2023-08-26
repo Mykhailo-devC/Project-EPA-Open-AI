@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Controller_SelectedScaffolderID>ApiControllerEmptyScaffolder</Controller_SelectedScaffolderID>
     <Controller_SelectedScaffolderCategoryPath>root/Common/Api</Controller_SelectedScaffolderCategoryPath>
-    <NameOfLastUsedPublishProfile>E:\Projects\Project-EPA\Project-EPA-OpenAI\EPA-WebAPI\Properties\PublishProfiles\EpaWebApi - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>F:\Projects\Project-EPA\Project-EPA-OpenAI\EPA-WebAPI\Properties\PublishProfiles\registry.hub.docker.com_mykhailodock2.pubxml</NameOfLastUsedPublishProfile>
     <ActiveDebugProfile>http</ActiveDebugProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

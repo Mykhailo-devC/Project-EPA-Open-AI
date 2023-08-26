@@ -1,7 +1,7 @@
-﻿using Epa.Engine.DB;
+﻿using EPA.Engine.DB;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Epa.Engine.DB
+namespace EPA.Engine.DB
 {
     public class EpaDbWraper : IDisposable
     {

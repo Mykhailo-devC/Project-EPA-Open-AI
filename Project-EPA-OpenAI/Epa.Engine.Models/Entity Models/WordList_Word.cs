@@ -1,4 +1,4 @@
-﻿namespace Epa.Engine.Models.Entity_Models
+﻿namespace EPA.Engine.Models.Entity_Models
 {
     public class WordListWord
     {

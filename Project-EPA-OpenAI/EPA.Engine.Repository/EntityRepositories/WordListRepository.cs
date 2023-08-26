@@ -1,11 +1,12 @@
-﻿using Epa.Engine.DB;
-using Epa.Engine.Models;
-using Epa.Engine.Models.DTO_Models;
-using Epa.Engine.Models.Entity_Models;
-using Epa.Engine.Models.Logic_Models;
+﻿using EPA.Engine.DB;
+using EPA.Engine.Models;
+using EPA.Engine.Models.DTO_Models;
+using EPA.Engine.Models.Entity_Models;
+using EPA.Engine.Models.Logic_Models;
+using EPA.Engine.Models.Result_Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Epa.Engine.Repository.EntityRepositories
+namespace EPA.Engine.Repository.EntityRepositories
 {
     public class WordListRepository : Repository
     {
@@ -26,11 +27,10 @@ namespace Epa.Engine.Repository.EntityRepositories
                 
                 if (result == null)
                 {
-                    return new QueryResult<WordList>
+                    return new QueryResult
                     {
                         Message = $"Entity with id {id} doesn't exist.",
                         Success = false,
-                        Result = null
                     };
                 }
 
@@ -43,11 +43,10 @@ namespace Epa.Engine.Repository.EntityRepositories
             }
             catch (Exception ex)
             {
-                return new QueryResult<WordList>
+                return new QueryResult
                 {
                     Message = $"Error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
                     Success = false,
-                    Result = null
                 };
             }
         }
@@ -67,11 +66,10 @@ namespace Epa.Engine.Repository.EntityRepositories
             }
             catch (Exception ex)
             {
-                return new QueryResult<WordList>
+                return new QueryResult
                 {
                     Message = $"Error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
                     Success = false,
-                    Result = null
                 };
             }
         }
@@ -127,11 +125,10 @@ namespace Epa.Engine.Repository.EntityRepositories
             catch (Exception ex)
             {
                 await _context.Database.RollbackTransactionAsync();
-                return new QueryResult<WordList>
+                return new QueryResult
                 {
                     Message = $"Error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
                     Success = false,
-                    Result = null
                 };
             }
             finally
@@ -150,11 +147,10 @@ namespace Epa.Engine.Repository.EntityRepositories
 
                 if (result == null)
                 {
-                    return new QueryResult<WordList>
+                    return new QueryResult
                     {
                         Message = $"Entity with id {id} doesn't exist.",
                         Success = false,
-                        Result = null
                     };
                 }
 
@@ -170,11 +166,10 @@ namespace Epa.Engine.Repository.EntityRepositories
             }
             catch (Exception ex)
             {
-                return new QueryResult<WordList>
+                return new QueryResult
                 {
                     Message = $"Error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
                     Success = false,
-                    Result = null
                 };
             }
         }
@@ -197,11 +192,10 @@ namespace Epa.Engine.Repository.EntityRepositories
                 if(wordList == null)
                 {
                     await _context.Database.RollbackTransactionAsync();
-                    return new QueryResult<WordList>
+                    return new QueryResult
                     {
                         Message = $"Entity with id {id} doesn't exist.",
                         Success = false,
-                        Result = null
                     };
                 }
 
@@ -223,11 +217,10 @@ namespace Epa.Engine.Repository.EntityRepositories
             catch (Exception ex)
             {
                 await _context.Database.RollbackTransactionAsync();
-                return new QueryResult<WordList>
+                return new QueryResult
                 {
                     Message = $"Error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
                     Success = false,
-                    Result = null
                 };
             }
         }

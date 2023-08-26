@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Epa.Engine.Models.DTO_Models
+namespace EPA.Engine.Models.DTO_Models
 {
     public class WordDTO : DtoEntity
     {

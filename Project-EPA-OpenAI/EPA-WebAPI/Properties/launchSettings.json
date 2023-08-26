@@ -22,7 +22,7 @@
       "commandName": "Docker",
       "launchBrowser": false,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/test",
-      "publishAllPorts": true
+      "publishAllPorts": true,
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",

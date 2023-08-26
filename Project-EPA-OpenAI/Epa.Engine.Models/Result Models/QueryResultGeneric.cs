@@ -1,6 +1,6 @@
-﻿using Epa.Engine.Models.Entity_Models;
+﻿using EPA.Common;
 
-namespace Epa.Engine.Models.DTO_Models
+namespace EPA.Engine.Models.Result_Models
 {
     public class QueryResult<TEntity> : IQueryResult<TEntity> where TEntity : Entity
     {
@@ -8,5 +8,6 @@ namespace Epa.Engine.Models.DTO_Models
         public string Message { get; set; }
         public bool Success { get; set; }
         IEnumerable<Entity> IQueryResult.Result { get => Result; set => Result = value as IEnumerable<TEntity>; }
+        IEnumerable<object> IResult.Result { get => Result; set => Result = value as IEnumerable<TEntity>; }
     }
 }

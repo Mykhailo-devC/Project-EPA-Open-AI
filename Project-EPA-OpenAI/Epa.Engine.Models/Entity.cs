@@ -1,4 +1,4 @@
-﻿namespace Epa.Engine.Models
+﻿namespace EPA.Engine.Models
 {
     public abstract class Entity
     {

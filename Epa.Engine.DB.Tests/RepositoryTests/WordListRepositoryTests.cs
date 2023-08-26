@@ -1,14 +1,14 @@
 ﻿using EntityFrameworkCoreMock;
-using Epa.Engine.DB;
-using Epa.Engine.Models.DTO_Models;
-using Epa.Engine.Models.Entity_Models;
-using Epa.Engine.Models.Logic_Models;
-using Epa.Engine.Repository;
-using Epa.Engine.Repository.EntityRepositories;
+using EPA.Engine.DB;
+using EPA.Engine.Models.DTO_Models;
+using EPA.Engine.Models.Entity_Models;
+using EPA.Engine.Models.Logic_Models;
+using EPA.Engine.Repository;
+using EPA.Engine.Repository.EntityRepositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace Epa.Engine.Tests.RepositoryTests
+namespace EPA.Engine.Tests.RepositoryTests
 {
     public class WordListRepositoryTests
     {
@@ -20,7 +20,7 @@ namespace Epa.Engine.Tests.RepositoryTests
             var mockResolver = new Mock<ServiceResolver.RepositoryResolver>();
             var wordPoolMock = new Mock<WordPoolRepository>(mockDbContext.Object);
             mockResolver.Setup(x => x.Invoke(RepositoryType.WordPool)).Returns(wordPoolMock.Object);
-            repository = new WordListRepository(mockDbContext.Object,  mockResolver.Object);
+            repository = new WordListRepository(mockDbContext.Object, new TransactionHandler(),mockResolver.Object);
         }
 
         [Fact]
